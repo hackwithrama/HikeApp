@@ -8,10 +8,21 @@
 import SwiftUI
 
 struct CircleView: View {
+    @State private var isAnimatingGradient = false
+    
     var body: some View {
-        Circle()
-            .fill(LinearGradient(colors: [.colorIndigoMedium, .colorSalmonLight], startPoint: .topLeading, endPoint: .bottomTrailing))
-            .frame(width: 230, height: 230)
+        ZStack {
+            Circle()
+                .fill(LinearGradient(colors: [.colorIndigoMedium, .colorSalmonLight], startPoint: isAnimatingGradient ? .topLeading : .bottomLeading, endPoint: isAnimatingGradient ? .bottomTrailing : .topTrailing))
+                .frame(width: 250, height: 250)
+                .onAppear{
+                    withAnimation(.easeInOut(duration: 3.0).repeatForever(autoreverses: true)){
+                        isAnimatingGradient.toggle()
+                    }
+            }
+            
+            MotionAnimationView()
+        }
     }
 }
 
